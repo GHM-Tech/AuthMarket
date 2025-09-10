@@ -13,9 +13,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
+    @NotBlank(message = "o nome completo é obrigatório")
     @Column(name = "nome", nullable = false,length = 120)
     private String nomeCompleto;
-    @NotBlank
+    @NotBlank(message = "Senha é obrigatória ")
     @Column(nullable = false)
     @Size(min = 6, max = 20)
     private String senha;
@@ -24,11 +25,8 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
-    public Usuario(Long id, String nomeCompleto, String senha, String email) {
-        this.id = id;
-        this.nomeCompleto = nomeCompleto;
-        this.senha = senha;
-        this.email = email;
+    public Usuario() {
+
     }
 
     public String getNomeCompleto() {
