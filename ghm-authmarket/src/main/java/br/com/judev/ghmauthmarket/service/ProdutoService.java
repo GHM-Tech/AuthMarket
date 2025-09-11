@@ -19,9 +19,13 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public CreateProdutoResponse createProduto(Long idUsuario, CreateProdutoRequest request) {
-        produtoRepository.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+    public CreateProdutoResponse createProduto(CreateProdutoRequest request) {
+//        produtoRepository.findById(idUsuario)
+//                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+
+        if (request.nome() == null || request.nome().isEmpty()){
+            throw new EntityNotFoundException("Produto não pode ser null ou vazio");
+        }
 
         Produto p = new Produto();
         p.setNome(request.nome());

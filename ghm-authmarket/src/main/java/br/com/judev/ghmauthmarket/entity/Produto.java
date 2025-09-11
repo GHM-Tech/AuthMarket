@@ -2,6 +2,8 @@ package br.com.judev.ghmauthmarket.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.engine.internal.Cascade;
+
 import java.time.LocalDate;
 
 @Table(name = "tb_produto")
@@ -27,13 +29,17 @@ public class Produto {
     private Double preco;
 
     @NotNull(message = "A quantidade é obrigatória")
-    @Min(value = 0, message = "A quantidade não pode ser negativa")
+    @Min(value = 1, message = "A quantidade deve ser maior que 0")
     @Column(nullable = false)
     private Integer quantidade;
 
     @PastOrPresent(message = "A data de cadastro não pode ser futura")
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro = LocalDate.now();
+
+//    @ManyToOne(cascade =  CascadeType.ALL)
+//    @JoinColumn(name = "usuario_id", nullable = false)
+//    private Usuario usuario;
 
     public Produto() {}
 
