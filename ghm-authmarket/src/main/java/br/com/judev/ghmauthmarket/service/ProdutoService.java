@@ -1,23 +1,29 @@
 package br.com.judev.ghmauthmarket.service;
 
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.entity.Produto;
-import br.com.judev.ghmauthmarket.repository.PodutoRepository;
+import br.com.judev.ghmauthmarket.entity.Usuario;
+import br.com.judev.ghmauthmarket.repository.ProdutoRepository;
+import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProdutoService {
 
-   private final PodutoRepository produtoRepository;
+   private final ProdutoRepository produtoRepository;
 
-    public ProdutoService(PodutoRepository produtoRepository) {
+   private final UsuarioRepository usuarioRepository;
+
+    public ProdutoService(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
         this.produtoRepository = produtoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public CreateProdutoResponse createProduto(CreateProdutoRequest request) {
-//        produtoRepository.findById(idUsuario)
+//        produtoRepository.findById())
 //                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
 
         if (request.nome() == null || request.nome().isEmpty()){
@@ -34,6 +40,12 @@ public class ProdutoService {
         return new CreateProdutoResponse("Produto Criado com Sucesso!");
     }
 
+    public UpdateProdutoResponse updateProduto (Long id){
+        Produto produto = produtoRepository.findById(id).get();
+        return new  UpdateProdutoResponse("Produto atualizado com sucesso.");
+    }
 
-
-}
+    public void deleteProduto(Long idProduto){
+            produtoRepository.deleteById(idProduto);
+        }
+ }

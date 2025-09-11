@@ -27,8 +27,8 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Produto> produtos;
+   // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    //private List<Produto> produtos;
 
 
     public Usuario() {
