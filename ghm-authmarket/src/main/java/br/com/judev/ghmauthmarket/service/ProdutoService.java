@@ -1,14 +1,11 @@
 package br.com.judev.ghmauthmarket.service;
 
-import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
-import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.entity.Produto;
-import br.com.judev.ghmauthmarket.entity.Usuario;
 import br.com.judev.ghmauthmarket.repository.PodutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ProdutoService {

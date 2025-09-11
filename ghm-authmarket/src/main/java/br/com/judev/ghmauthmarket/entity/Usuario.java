@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Table(name = "tb_usuario")
 @Entity
 public class Usuario {
@@ -24,6 +26,10 @@ public class Usuario {
     @Email
     @Column(unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Produto> produtos;
+
 
     public Usuario() {
 

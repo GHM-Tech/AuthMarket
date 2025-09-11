@@ -1,7 +1,7 @@
 package br.com.judev.ghmauthmarket.controller;
 
-import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
-import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
