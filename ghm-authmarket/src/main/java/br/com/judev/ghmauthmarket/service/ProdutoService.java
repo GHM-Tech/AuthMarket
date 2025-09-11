@@ -34,9 +34,9 @@ public class ProdutoService {
         p.setQuantidade(request.quantidade());
         var produtoSalvo = produtoRepository.save(p);
 
-        return new CreateProdutoResponse(
-                produtoSalvo.getNome(), produtoSalvo.getDescricao(),
-                produtoSalvo.getPreco(),
-                produtoSalvo.getQuantidade());
+        return new CreateProdutoResponse("Produto Criado com Sucesso!");
     }
+
+
+
 }
