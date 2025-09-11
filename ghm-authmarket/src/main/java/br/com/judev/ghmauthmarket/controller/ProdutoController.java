@@ -1,9 +1,8 @@
 package br.com.judev.ghmauthmarket.controller;
 
-import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
-import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
-import br.com.judev.ghmauthmarket.dto.UpdateProdutoRequest;
-import br.com.judev.ghmauthmarket.dto.UpdateProdutoResponse;
+
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.service.ProdutoService;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -40,10 +37,10 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoService.updateProduto(id));
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<CreateProdutoResponse> delete(@PathVariable Long id){
-//    produtoService.deleteProduto(id);
-//    return ResponseEntity.noContent().build();
-//    }
+        @DeleteMapping("/{id}")
+        public ResponseEntity<CreateProdutoResponse> delete(@PathVariable Long id){
+        produtoService.deleteProduto(id);
+        return ResponseEntity.noContent().build();
+        }
 
 }
