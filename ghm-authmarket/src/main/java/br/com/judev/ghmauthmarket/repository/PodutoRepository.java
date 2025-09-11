@@ -1,7 +1,11 @@
 package br.com.judev.ghmauthmarket.repository;
 
 import br.com.judev.ghmauthmarket.entity.Produto;
+import br.com.judev.ghmauthmarket.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface PodutoRepository extends JpaRepository<Produto,Long> {
+ //Optional <Usuario> findByIdUsuario(Long idUsuario);
 }

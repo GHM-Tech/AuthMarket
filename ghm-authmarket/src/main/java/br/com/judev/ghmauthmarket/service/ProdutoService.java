@@ -2,6 +2,7 @@ package br.com.judev.ghmauthmarket.service;
 
 import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.entity.Produto;
 import br.com.judev.ghmauthmarket.entity.Usuario;
 import br.com.judev.ghmauthmarket.repository.PodutoRepository;
@@ -39,4 +40,15 @@ public class ProdutoService {
                 produtoSalvo.getPreco(),
                 produtoSalvo.getQuantidade());
     }
+
+    public UpdateProdutoResponse updateProduto (Long id){
+        Produto produto = produtoRepository.findById(id).get();
+        return new  UpdateProdutoResponse("Produto atualizado com sucesso.");
+    }
+
+//    public void deleteProduto(Long id){
+//        Usuario usuario = produtoRepository.findByIdUsuario(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Dono do produto não encontrado"));
+//        produtoRepository.deleteById(id);
+//    }
 }
