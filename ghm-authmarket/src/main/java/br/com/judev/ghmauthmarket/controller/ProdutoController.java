@@ -4,6 +4,8 @@ import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.UpdateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.UpdateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

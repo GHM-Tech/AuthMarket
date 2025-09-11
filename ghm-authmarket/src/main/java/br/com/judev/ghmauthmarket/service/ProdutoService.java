@@ -3,13 +3,12 @@ package br.com.judev.ghmauthmarket.service;
 import br.com.judev.ghmauthmarket.dto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.UpdateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.entity.Produto;
-import br.com.judev.ghmauthmarket.entity.Usuario;
 import br.com.judev.ghmauthmarket.repository.PodutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -35,10 +34,7 @@ public class ProdutoService {
         p.setQuantidade(request.quantidade());
         var produtoSalvo = produtoRepository.save(p);
 
-        return new CreateProdutoResponse(
-                produtoSalvo.getNome(), produtoSalvo.getDescricao(),
-                produtoSalvo.getPreco(),
-                produtoSalvo.getQuantidade());
+        return new CreateProdutoResponse("Produto Criado com Sucesso!");
     }
 
     public UpdateProdutoResponse updateProduto (Long id){
@@ -51,4 +47,6 @@ public class ProdutoService {
 //                .orElseThrow(() -> new EntityNotFoundException("Dono do produto não encontrado"));
 //        produtoRepository.deleteById(id);
 //    }
+
+
 }
