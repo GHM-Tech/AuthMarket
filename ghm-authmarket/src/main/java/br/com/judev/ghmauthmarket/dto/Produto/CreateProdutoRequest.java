@@ -1,4 +1,4 @@
-package br.com.judev.ghmauthmarket.dto;
+package br.com.judev.ghmauthmarket.dto.Produto;
 
 import jakarta.validation.constraints.*;
 

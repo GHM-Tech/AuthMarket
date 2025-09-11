@@ -1,9 +1,6 @@
 package br.com.judev.ghmauthmarket.service;
 
-import br.com.judev.ghmauthmarket.dto.Usuario.AuthRequest;
-import br.com.judev.ghmauthmarket.dto.Usuario.AuthResponse;
-import br.com.judev.ghmauthmarket.dto.Usuario.CreateUsuarioRequest;
-import br.com.judev.ghmauthmarket.dto.Usuario.CreateUsuarioResponse;
+import br.com.judev.ghmauthmarket.dto.Usuario.*;
 import br.com.judev.ghmauthmarket.entity.Usuario;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +20,7 @@ public class UsuarioService {
         u.setNomeCompleto(request.nome());
         u.setEmail(request.email());
         u.setSenha(request.senha());
-        var usuarioCriado = usuarioRepository.save(u);
+        usuarioRepository.save(u);
         return new CreateUsuarioResponse("Usuário Criado com Sucesso");
     }
 
@@ -36,5 +33,24 @@ public class UsuarioService {
          }
          return new AuthResponse("Login realizado com Sucesso!");
 
+    }
+
+    public AtualizaSenhaResponse atualizarSenha(String email, AtualizaSenhaRequest request){
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
+
+        if(usuario.getSenha().equals(request.senhaAtual())){
+            throw new EntityNotFoundException("Senha incorreta!");
+        }
+        usuario.setSenha(request.novaSenha());
+         usuarioRepository.save(usuario);
+        return new AtualizaSenhaResponse("Senha atualizada com Sucesso!");
+    }
+
+    public void deletarUsuario(Long idUsuario) {
+        if (!usuarioRepository.existsById(idUsuario)) {
+            throw new EntityNotFoundException("Usuário não encontrado com id: " + idUsuario);
+        }
+        usuarioRepository.deleteById(idUsuario);
     }
 }
