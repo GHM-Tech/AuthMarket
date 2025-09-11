@@ -19,7 +19,5 @@ public record CreateProdutoRequest (
     @Min(value = 0, message = "A quantidade não pode ser negativa")
     Integer quantidade){
 
- //   Long usuario_id){
-
 }
 
