@@ -76,7 +76,7 @@ public class PedidoService {
                         item.getProduto().getId(),
                         item.getProduto().getNome(),
                         item.getQuantidade()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new PedidoResponse("Pedido Criado com Sucesso");
     }
