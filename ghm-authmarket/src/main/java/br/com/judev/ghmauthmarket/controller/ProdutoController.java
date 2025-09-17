@@ -28,14 +28,10 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
  
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id,
-                                                        @RequestBody UpdateProdutoRequest produtoRequest) {
+    public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id, @RequestBody UpdateProdutoRequest produtoRequest) {
         UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
-        if (updateProdutoResponse == null){
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.ok(produtoService.atualizarProduto(id, produtoRequest));
+        return ResponseEntity.ok(updateProdutoResponse);
     }
+
 }
