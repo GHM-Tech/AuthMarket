@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
@@ -41,5 +43,10 @@ public class ProdutoController {
         UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
 
         return ResponseEntity.ok(updateProdutoResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<List> listarProdutos(){
+       return  ResponseEntity.ok(produtoService.listarTodos());
     }
 }

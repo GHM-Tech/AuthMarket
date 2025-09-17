@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 public record ItemRequest(
         @NotNull Long produtoId,
-        @NotNull @Min(1) Integer quantidade
+        @NotNull Integer quantidade
 ) {}

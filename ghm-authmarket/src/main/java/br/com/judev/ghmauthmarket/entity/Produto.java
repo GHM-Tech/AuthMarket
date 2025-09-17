@@ -29,7 +29,7 @@ public class Produto {
     private BigDecimal preco;
 
     @NotNull(message = "A quantidade é obrigatória")
-    @Min(value = 1, message = "A quantidade deve ser maior que 0")
+    @Min(value = 0, message = "A quantidade deve ser maior que 0")
     @Column(nullable = false)
     private int quantidade;
 

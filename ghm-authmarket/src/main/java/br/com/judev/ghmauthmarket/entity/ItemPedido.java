@@ -21,7 +21,7 @@ public class ItemPedido {
     private Produto produto;
 
     @NotNull(message = "A quantidade é obrigatória.")
-    @Min(value = 1, message = "A quantidade deve ser pelo menos 1.")
+    @Min(value = 0, message = "A quantidade deve ser pelo menos 1.")
     private Integer quantidade;
 
     public ItemPedido() {}
