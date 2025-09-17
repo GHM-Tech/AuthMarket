@@ -22,15 +22,24 @@ public class ProdutoController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
+    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest) {
         CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
- 
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id, @RequestBody UpdateProdutoRequest produtoRequest) {
-        UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
-        return ResponseEntity.ok(updateProdutoResponse);
+
     }
 
+    @DeleteMapping("{id}")
+    public void deleteProduto(Long idProduto) {
+        produtoService.deleteProduto(idProduto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateProdutoResponse> update(
+            @PathVariable Long id,
+            @RequestBody UpdateProdutoRequest produtoRequest) {
+
+        UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
+
+        return ResponseEntity.ok(updateProdutoResponse);
+    }
 }
