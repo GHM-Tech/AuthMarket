@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
+
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
@@ -29,11 +32,11 @@ public class ProdutoController {
     @PutMapping("/{id}")
     public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id,
                                                         @RequestBody UpdateProdutoRequest produtoRequest) {
-        UpdateProdutoResponse updateProdutoResponse = produtoService.updateProduto(id);
+        UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
         if (updateProdutoResponse == null){
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.ok(produtoService.updateProduto(id));
+        return ResponseEntity.ok(produtoService.atualizarProduto(id, produtoRequest));
     }
 
         @DeleteMapping("/{id}")

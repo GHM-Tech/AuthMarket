@@ -1,5 +1,6 @@
 package br.com.judev.ghmauthmarket.service;
 
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
@@ -22,14 +23,13 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final UsuarioRepository usuarioRepository;
-   private final ProdutoRepository produtoRepository;
 
-   private final UsuarioRepository usuarioRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
         this.produtoRepository = produtoRepository;
         this.usuarioRepository = usuarioRepository;
     }
+
     public CreateProdutoResponse criarProduto(CreateProdutoRequest dto) {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário (dono) não encontrado"));
@@ -41,24 +41,13 @@ public class ProdutoService {
         p.setQuantidade(dto.quantidade());
         p.setUsuario(usuario);
 
-    public CreateProdutoResponse createProduto(CreateProdutoRequest request) {
-//        produtoRepository.findById())
-//                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
-
-        Produto salvo = produtoRepository.save(p);
-
         return new CreateProdutoResponse(
-                salvo.getId(),
-                salvo.getNome(),
-                salvo.getDescricao(),
-                salvo.getPreco(),
-                salvo.getQuantidade(),
-                salvo.getDataCadastro(),
-                usuario.getId(),
-                usuario.getNomeCompleto()
-        );
+                p.getId(), p.getNome(), p.getDescricao(),
+                p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
+                p.getUsuario().getId(), p.getUsuario().getNomeCompleto());
     }
-    public List<ProdutoResponseDTO> listarTodos() {
+
+   public List<ProdutoResponseDTO> listarTodos() {
         return produtoRepository.findAll()
                 .stream()
                 .map(p -> new ProdutoResponseDTO(
@@ -78,11 +67,11 @@ public class ProdutoService {
                 .collect(Collectors.toList());
     }
 
-    public ProdutoResponseDTO atualizarProduto(Long produtoId, ProdutoRequestDTO dto) {
+    public UpdateProdutoResponse atualizarProduto(Long produtoId, UpdateProdutoRequest dto) {
         Produto produto = produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
 
-         usuarioRepository.findById(dto.usuarioId())
+         usuarioRepository.findById(produto.getUsuario().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
         produto.setNome(dto.nome());
@@ -92,22 +81,10 @@ public class ProdutoService {
 
         Produto atualizado = produtoRepository.save(produto);
 
-        return new ProdutoResponseDTO(
-                atualizado.getId(), atualizado.getNome(), atualizado.getDescricao(),
-                atualizado.getPreco(), atualizado.getQuantidade(), atualizado.getDataCadastro(),
-                atualizado.getUsuario().getId(), atualizado.getUsuario().getNomeCompleto());
+        return new UpdateProdutoResponse("Produto Atualizado com sucesso!");
     }
 
-    public void deletarProduto(Long produtoId) {
-        produtoRepository.findById(produtoId)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
-        produtoRepository.deleteById(produtoId);
-    }
-}
-    public UpdateProdutoResponse updateProduto (Long id){
-        Produto produto = produtoRepository.findById(id).get();
-        return new  UpdateProdutoResponse("Produto atualizado com sucesso.");
-    }
+
 
     public void deleteProduto(Long idProduto){
             produtoRepository.deleteById(idProduto);

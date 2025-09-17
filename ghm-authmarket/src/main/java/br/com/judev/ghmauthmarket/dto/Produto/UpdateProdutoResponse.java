@@ -1,4 +1,8 @@
 package br.com.judev.ghmauthmarket.dto.Produto;
 
-public record UpdateProdutoResponse(String message) {
-}
+import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
+
+public record UpdateProdutoResponse(String message)
+{}

@@ -78,14 +78,7 @@ public class PedidoService {
                         item.getQuantidade()))
                 .collect(Collectors.toList());
 
-        return new PedidoResponse(
-                pedido.getId(),
-                pedido.getDataPedido(),
-                pedido.getUsuario().getEmail(),
-                itens,
-                pedido.getValorTotal()
-        );
-
+        return new PedidoResponse("Pedido Criado com Sucesso");
     }
     public List<PedidoResponse> listarTodos() {
         return pedidoRepository.findAll()
