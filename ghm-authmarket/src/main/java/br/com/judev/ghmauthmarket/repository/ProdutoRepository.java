@@ -8,4 +8,11 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     List<Produto> findByUsuarioId(Long usuarioId);
 
+import br.com.judev.ghmauthmarket.entity.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface ProdutoRepository extends JpaRepository<Produto,Long> {
+//     Optional <Usuario> findByIdUsuario(Long id_usuario);
 }

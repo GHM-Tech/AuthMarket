@@ -31,6 +31,8 @@ public class Usuario {
 
     @Column(name = "data_cadastro", nullable = false)
     private LocalDateTime dataCadastro = LocalDateTime.now();
+   // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    //private List<Produto> produtos;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Produto> produtos = new ArrayList<>();

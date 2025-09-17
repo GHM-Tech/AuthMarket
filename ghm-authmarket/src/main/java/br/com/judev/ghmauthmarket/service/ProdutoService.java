@@ -1,5 +1,6 @@
 package br.com.judev.ghmauthmarket.service;
 
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.ProdutoRequestDTO;
@@ -21,6 +22,9 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final UsuarioRepository usuarioRepository;
+   private final ProdutoRepository produtoRepository;
+
+   private final UsuarioRepository usuarioRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
         this.produtoRepository = produtoRepository;
@@ -36,6 +40,10 @@ public class ProdutoService {
         p.setPreco(BigDecimal.valueOf(dto.preco()));
         p.setQuantidade(dto.quantidade());
         p.setUsuario(usuario);
+
+    public CreateProdutoResponse createProduto(CreateProdutoRequest request) {
+//        produtoRepository.findById())
+//                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
 
         Produto salvo = produtoRepository.save(p);
 
@@ -96,3 +104,12 @@ public class ProdutoService {
         produtoRepository.deleteById(produtoId);
     }
 }
+    public UpdateProdutoResponse updateProduto (Long id){
+        Produto produto = produtoRepository.findById(id).get();
+        return new  UpdateProdutoResponse("Produto atualizado com sucesso.");
+    }
+
+    public void deleteProduto(Long idProduto){
+            produtoRepository.deleteById(idProduto);
+        }
+ }

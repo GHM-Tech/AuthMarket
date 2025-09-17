@@ -1,5 +1,8 @@
 package br.com.judev.ghmauthmarket.controller;
 
+
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoRequest;
+import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.service.ProdutoService;
@@ -20,7 +23,23 @@ public class ProdutoController {
     public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
         CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
-
+ 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id,
+                                                        @RequestBody UpdateProdutoRequest produtoRequest) {
+        UpdateProdutoResponse updateProdutoResponse = produtoService.updateProduto(id);
+        if (updateProdutoResponse == null){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.ok(produtoService.updateProduto(id));
+    }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<CreateProdutoResponse> delete(@PathVariable Long id){
+        produtoService.deleteProduto(id);
+        return ResponseEntity.noContent().build();
+        }
 
 }
