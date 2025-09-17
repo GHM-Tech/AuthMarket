@@ -18,8 +18,7 @@ public class ProdutoController {
 
     @PostMapping("/register")
     public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
-
-        CreateProdutoResponse produtoResponse = produtoService.createProduto(produtoRequest);
+        CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
 
     }

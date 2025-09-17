@@ -1,4 +1,10 @@
 package br.com.judev.ghmauthmarket.dto.Usuario;
 
-public record CreateUsuarioResponse(String message) {
-}
+import java.time.LocalDateTime;
+
+public record CreateUsuarioResponse(
+        Long id,
+        String nomeCompleto,
+        String email,
+        LocalDateTime dataCadastro
+) {}

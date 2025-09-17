@@ -1,5 +1,8 @@
 package br.com.judev.ghmauthmarket.service;
 
+import br.com.judev.ghmauthmarket.dto.Pedido.ItemResponse;
+import br.com.judev.ghmauthmarket.dto.Pedido.PedidoRequest;
+import br.com.judev.ghmauthmarket.dto.Pedido.PedidoResponse;
 import br.com.judev.ghmauthmarket.entity.ItemPedido;
 import br.com.judev.ghmauthmarket.entity.Pedido;
 import br.com.judev.ghmauthmarket.entity.Produto;
@@ -9,6 +12,10 @@ import br.com.judev.ghmauthmarket.repository.ProdutoRepository;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
@@ -24,20 +31,5 @@ public class PedidoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public PedidoResponse criarPedido(PedidoRequest request) {
-        Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
 
-        Pedido pedido = new Pedido(usuario);
-
-        request.itens().forEach(itemReq -> {
-            Produto produto = produtoRepository.findById(itemReq.produtoId())
-                    .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado: " + itemReq.produtoId()));
-            ItemPedido item = new ItemPedido(produto, itemReq.quantidade());
-            pedido.adicionarItem(item);
-        });
-
-        Pedido salvo = pedidoRepository.save(pedido);
-        return toResponse(salvo);
-    }
 }
