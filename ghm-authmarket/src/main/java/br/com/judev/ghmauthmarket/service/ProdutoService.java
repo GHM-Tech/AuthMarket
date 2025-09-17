@@ -4,7 +4,6 @@ import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
 import br.com.judev.ghmauthmarket.entity.Produto;
-import br.com.judev.ghmauthmarket.entity.Usuario;
 import br.com.judev.ghmauthmarket.repository.ProdutoRepository;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
