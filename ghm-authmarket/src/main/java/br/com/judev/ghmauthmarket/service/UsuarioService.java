@@ -6,6 +6,8 @@ import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UsuarioService {
 
@@ -15,20 +17,32 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public CreateUsuarioResponse registerUsuario(CreateUsuarioRequest request) {
-        Usuario u = new Usuario();
-        u.setNomeCompleto(request.nome());
-        u.setEmail(request.email());
-        u.setSenha(request.senha());
-        usuarioRepository.save(u);
-        return new CreateUsuarioResponse("Usuário Criado com Sucesso");
+    public CreateUsuarioResponse criarUsuario(CreateUsuarioRequest request) {
+        if (usuarioRepository.findByEmail(request.email()).isPresent()) {
+            throw new IllegalArgumentException("Email já cadastrado.");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNomeCompleto(request.nome());
+        usuario.setEmail(request.email());
+        usuario.setSenha(request.senha());
+        usuario.setDataCadastro(LocalDateTime.now());
+
+        Usuario salvo = usuarioRepository.save(usuario);
+
+        return new CreateUsuarioResponse(
+                salvo.getId(),
+                salvo.getNomeCompleto(),
+                salvo.getEmail(),
+                salvo.getDataCadastro()
+        );
     }
 
     public AuthResponse loginUsario(AuthRequest request){
          Usuario usuario = usuarioRepository.findByEmail(request.email())
                  .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
 
-         if(usuario == null || usuario.getSenha().equals(request.senha())){
+         if(usuario == null || !usuario.getSenha().equals(request.senha())){
              throw new EntityNotFoundException("Usuário inexistente ou Senha incorreta!");
          }
          return new AuthResponse("Login realizado com Sucesso!");
@@ -43,7 +57,7 @@ public class UsuarioService {
             throw new EntityNotFoundException("Senha incorreta!");
         }
         usuario.setSenha(request.novaSenha());
-         usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario);
         return new AtualizaSenhaResponse("Senha atualizada com Sucesso!");
     }
 

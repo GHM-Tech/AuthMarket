@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "tb_usuario")
@@ -27,9 +29,16 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
+    @Column(name = "data_cadastro", nullable = false)
+    private LocalDateTime dataCadastro = LocalDateTime.now();
    // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     //private List<Produto> produtos;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Produto> produtos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public Usuario() {
 
@@ -59,5 +68,19 @@ public class Usuario {
         this.email = email;
     }
 
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
 
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

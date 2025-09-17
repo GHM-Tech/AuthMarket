@@ -2,6 +2,8 @@ package br.com.judev.ghmauthmarket.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +25,9 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ItemPedido> itens = new HashSet<>();
+
+    @Column(name = "valor_total", precision = 12, scale = 2, nullable = false)
+    private BigDecimal valorTotal = BigDecimal.ZERO;
 
     public Pedido() {}
 
@@ -51,6 +56,31 @@ public class Pedido {
     public void removerItem(ItemPedido item) {
         itens.remove(item);
         item.setPedido(null);
+    }
+
+
+    public void setDataPedido(LocalDateTime dataPedido) {
+        this.dataPedido = dataPedido;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
 

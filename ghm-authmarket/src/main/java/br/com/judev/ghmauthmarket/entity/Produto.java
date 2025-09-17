@@ -2,8 +2,8 @@ package br.com.judev.ghmauthmarket.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.engine.internal.Cascade;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Table(name = "tb_produto")
@@ -26,24 +26,24 @@ public class Produto {
     @NotNull(message = "O preço é obrigatório")
     @DecimalMin(value = "0.01", message = "O preço deve ser maior que 0")
     @Column(nullable = false)
-    private Double preco;
+    private BigDecimal preco;
 
     @NotNull(message = "A quantidade é obrigatória")
     @Min(value = 1, message = "A quantidade deve ser maior que 0")
     @Column(nullable = false)
-    private Integer quantidade;
+    private int quantidade;
 
     @PastOrPresent(message = "A data de cadastro não pode ser futura")
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro = LocalDate.now();
 
-//    @ManyToOne(cascade =  CascadeType.ALL)
-//    @JoinColumn(name = "usuario_id", nullable = false)
-//    private Usuario usuario;
+    @ManyToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     public Produto() {}
 
-    public Produto(String nome, String descricao, Double preco, Integer quantidade) {
+    public Produto(String nome, String descricao, BigDecimal preco, Integer quantidade) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -71,11 +71,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(@NotNull BigDecimal preco) {
         this.preco = preco;
     }
 
@@ -93,5 +93,13 @@ public class Produto {
 
     public void setDataCadastro(LocalDate dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

@@ -20,11 +20,10 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping("/register")
-    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest) {
-
-        CreateProdutoResponse createProdutoResponse = produtoService.createProduto(produtoRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(createProdutoResponse);
-
+    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
+        CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
+ 
     }
 
     @PutMapping("/{id}")
