@@ -23,7 +23,6 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final UsuarioRepository usuarioRepository;
 
-
     public ProdutoService(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
         this.produtoRepository = produtoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -48,20 +47,10 @@ public class ProdutoService {
                 salvo.getUsuario().getId(), salvo.getUsuario().getNomeCompleto());
     }
 
-   public List<ProdutoResponseDTO> listarTodos() {
+    public List<CreateProdutoResponse> listarTodos() {
         return produtoRepository.findAll()
                 .stream()
-                .map(p -> new ProdutoResponseDTO(
-                        p.getId(), p.getNome(), p.getDescricao(),
-                        p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
-                        p.getUsuario().getId(), p.getUsuario().getNomeCompleto()))
-                .collect(Collectors.toList());
-    }
-
-    public List<ProdutoResponseDTO> listarPorUsuario(Long usuarioId) {
-        return produtoRepository.findByUsuarioId(usuarioId)
-                .stream()
-                .map(p -> new ProdutoResponseDTO(
+                .map(p -> new CreateProdutoResponse(
                         p.getId(), p.getNome(), p.getDescricao(),
                         p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
                         p.getUsuario().getId(), p.getUsuario().getNomeCompleto()))
@@ -84,7 +73,6 @@ public class ProdutoService {
 
         return new UpdateProdutoResponse("Produto Atualizado com sucesso!");
     }
-
 
     public void deleteProduto(Long idProduto){
             produtoRepository.deleteById(idProduto);

@@ -9,5 +9,5 @@ public record ProdutoRequestDTO(
         @NotBlank @Size(max = 200) String descricao,
         @NotNull @DecimalMin("0.01") BigDecimal preco,
         @NotNull @Min(0) Integer quantidade,
-        @NotNull Long usuarioId // sem security: passamos o id do dono
+        @NotNull Long usuarioId
 ) {}

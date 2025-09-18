@@ -78,7 +78,7 @@ public class PedidoService {
                         item.getQuantidade()))
                 .toList();
 
-        return new PedidoResponse("Pedido Criado com Sucesso");
+        return toResponse(pedido);
     }
     public List<PedidoResponse> listarTodos() {
         return pedidoRepository.findAll()

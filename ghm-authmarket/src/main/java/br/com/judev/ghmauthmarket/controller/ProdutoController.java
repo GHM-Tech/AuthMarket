@@ -1,10 +1,12 @@
 package br.com.judev.ghmauthmarket.controller;
 
 
+import br.com.judev.ghmauthmarket.dto.Pedido.PedidoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.UpdateProdutoResponse;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoRequest;
 import br.com.judev.ghmauthmarket.dto.Produto.CreateProdutoResponse;
+import br.com.judev.ghmauthmarket.dto.ProdutoResponseDTO;
 import br.com.judev.ghmauthmarket.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -46,7 +48,15 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List> listarProdutos(){
-       return  ResponseEntity.ok(produtoService.listarTodos());
+    public ResponseEntity<List<CreateProdutoResponse>> listarTodos() {
+        List<CreateProdutoResponse> produtoResponses = produtoService.listarTodos();
+        return ResponseEntity.ok(produtoResponses);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        produtoService.deleteProduto(id);
+        return ResponseEntity.noContent().build();
+
     }
 }
