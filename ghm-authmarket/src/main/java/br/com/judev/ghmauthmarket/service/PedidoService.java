@@ -32,8 +32,8 @@ public class PedidoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public PedidoResponse criarPedido(Long usuarioId, PedidoRequest request) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+    public PedidoResponse criarPedido(PedidoRequest request) {
+        Usuario usuario = usuarioRepository.findById(request.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
 
         Pedido pedido = new Pedido();
@@ -102,5 +102,9 @@ public class PedidoService {
                                 .toList()
                 ))
                 .toList();
+    }
+
+    public void deletePedido(Long idPedido){
+        pedidoRepository.deleteById(idPedido);
     }
 }

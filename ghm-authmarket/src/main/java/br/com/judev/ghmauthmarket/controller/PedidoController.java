@@ -20,11 +20,10 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    @PostMapping("/usuarios/{usuarioId}/pedidos")
+    @PostMapping("/register")
     public ResponseEntity<PedidoResponse> criarPedido(
-            @PathVariable Long usuarioId,
             @Valid @RequestBody PedidoRequest request) {
-        PedidoResponse response = pedidoService.criarPedido(usuarioId, request);
+        PedidoResponse response = pedidoService.criarPedido(request);
         return ResponseEntity.ok(response);
     }
 
@@ -34,8 +33,10 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
 
- /*   @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<PedidoResponse>> listarPorUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(pedidoService.listarTodos(usuarioId));
-    }*/
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        pedidoService.deletePedido(id);
+        return ResponseEntity.noContent().build();
+
+    }
 }

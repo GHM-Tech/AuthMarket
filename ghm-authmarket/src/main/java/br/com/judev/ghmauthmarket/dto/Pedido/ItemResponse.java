@@ -8,6 +8,6 @@ import java.util.List;
 public record ItemResponse(
         Long produtoId,
         String nomeProduto,
-        Integer quantidade
+        int quantidade
 ) {}
 

@@ -46,11 +46,4 @@ public class ProdutoController {
         List<CreateProdutoResponse> produtoResponses = produtoService.listarTodos();
         return ResponseEntity.ok(produtoResponses);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        produtoService.deleteProduto(id);
-        return ResponseEntity.noContent().build();
-
-    }
 }
