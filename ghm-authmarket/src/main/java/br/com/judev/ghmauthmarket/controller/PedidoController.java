@@ -32,8 +32,8 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
 
-    @GetMapping("/usuario/{usuarioId}")
+ /*   @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<PedidoResponse>> listarPorUsuario(@PathVariable Long usuarioId) {
-        return ResponseEntity.ok(pedidoService.listarPorUsuario(usuarioId));
-    }
+        return ResponseEntity.ok(pedidoService.listarTodos(usuarioId));
+    }*/
 }
