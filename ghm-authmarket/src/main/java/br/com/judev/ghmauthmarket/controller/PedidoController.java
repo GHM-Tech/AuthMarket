@@ -19,7 +19,7 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    @PostMapping("/usuarios/{usuarioId}/pedidos")
+    @PostMapping("/usuario/{usuarioId}/pedidos")
     public ResponseEntity<PedidoResponse> criarPedido(
             @PathVariable Long usuarioId,
             @Valid @RequestBody PedidoRequest request) {

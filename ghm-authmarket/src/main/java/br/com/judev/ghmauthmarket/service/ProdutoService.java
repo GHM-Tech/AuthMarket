@@ -23,7 +23,6 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final UsuarioRepository usuarioRepository;
 
-
     public ProdutoService(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
         this.produtoRepository = produtoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -33,33 +32,25 @@ public class ProdutoService {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário (dono) não encontrado"));
 
-        Produto p = new Produto();
-        p.setNome(dto.nome());
-        p.setDescricao(dto.descricao());
-        p.setPreco(BigDecimal.valueOf(dto.preco()));
-        p.setQuantidade(dto.quantidade());
-        p.setUsuario(usuario);
+        Produto produto = new Produto();
+        produto.setNome(dto.nome());
+        produto.setDescricao(dto.descricao());
+        produto.setPreco(BigDecimal.valueOf(dto.preco()));
+        produto.setQuantidade(dto.quantidade());
+        produto.setUsuario(usuario);
+
+        Produto salvo = produtoRepository.save(produto);
 
         return new CreateProdutoResponse(
-                p.getId(), p.getNome(), p.getDescricao(),
-                p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
-                p.getUsuario().getId(), p.getUsuario().getNomeCompleto());
+                salvo.getId(), salvo.getNome(), salvo.getDescricao(),
+                salvo.getPreco(), salvo.getQuantidade(), salvo.getDataCadastro(),
+                salvo.getUsuario().getId(), salvo.getUsuario().getNomeCompleto());
     }
 
-   public List<ProdutoResponseDTO> listarTodos() {
+    public List<CreateProdutoResponse> listarTodos() {
         return produtoRepository.findAll()
                 .stream()
-                .map(p -> new ProdutoResponseDTO(
-                        p.getId(), p.getNome(), p.getDescricao(),
-                        p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
-                        p.getUsuario().getId(), p.getUsuario().getNomeCompleto()))
-                .collect(Collectors.toList());
-    }
-
-    public List<ProdutoResponseDTO> listarPorUsuario(Long usuarioId) {
-        return produtoRepository.findByUsuarioId(usuarioId)
-                .stream()
-                .map(p -> new ProdutoResponseDTO(
+                .map(p -> new CreateProdutoResponse(
                         p.getId(), p.getNome(), p.getDescricao(),
                         p.getPreco(), p.getQuantidade(), p.getDataCadastro(),
                         p.getUsuario().getId(), p.getUsuario().getNomeCompleto()))
@@ -82,7 +73,6 @@ public class ProdutoService {
 
         return new UpdateProdutoResponse("Produto Atualizado com sucesso!");
     }
-
 
     public void deleteProduto(Long idProduto){
             produtoRepository.deleteById(idProduto);
