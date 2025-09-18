@@ -107,4 +107,19 @@ public class PedidoService {
     public void deletePedido(Long idPedido){
         pedidoRepository.deleteById(idPedido);
     }
+
+    public void deleteProdutoEmPedido(Long idPedido, Long idProduto) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado"));
+
+        boolean removido = pedido.getItens().removeIf(
+                item -> item.getProduto().getId().equals(idProduto)
+        );
+
+        if (!removido) {
+            throw new EntityNotFoundException("Produto não encontrado no pedido");
+        }
+
+        pedidoRepository.save(pedido);
+    }
 }
