@@ -2,8 +2,12 @@ package br.com.judev.ghmauthmarket.service;
 
 import br.com.judev.ghmauthmarket.dto.Usuario.*;
 import br.com.judev.ghmauthmarket.entity.Usuario;
+import br.com.judev.ghmauthmarket.infra.security.TokenService;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,9 +16,13 @@ import java.time.LocalDateTime;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public CreateUsuarioResponse criarUsuario(CreateUsuarioRequest request) {
@@ -27,6 +35,9 @@ public class UsuarioService {
         usuario.setEmail(request.email());
         usuario.setSenha(request.senha());
         usuario.setDataCadastro(LocalDateTime.now());
+
+        String hash = passwordEncoder.encode(request.senha());
+        usuario.setSenha(hash);
 
         Usuario salvo = usuarioRepository.save(usuario);
 
@@ -42,10 +53,12 @@ public class UsuarioService {
          Usuario usuario = usuarioRepository.findByEmail(request.email())
                  .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
 
-         if(usuario == null || !usuario.getSenha().equals(request.senha())){
-             throw new EntityNotFoundException("Usuário inexistente ou Senha incorreta!");
-         }
-         return new AuthResponse("Login realizado com Sucesso!");
+        if (!passwordEncoder.matches(request.senha(), usuario.getSenha())) {
+            throw new BadCredentialsException("Senha Inválida");
+        }
+
+        String token = tokenService.generateToken(usuario);
+        return new AuthResponse(token, "Login realizado com Sucesso!");
 
     }
 
@@ -53,8 +66,8 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
 
-        if(usuario == null || !usuario.getSenha().equals(request.senhaAtual())){
-            throw new EntityNotFoundException("Usuário inexistente ou Senha incorreta!");
+        if (!passwordEncoder.matches(request.senhaAtual(), usuario.getSenha())) {
+            throw new BadCredentialsException("Senha atual incorreta!");
         }
         usuario.setSenha(request.novaSenha());
         usuarioRepository.save(usuario);

@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/pedidos/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(SecurityFilterChain(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(securityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
