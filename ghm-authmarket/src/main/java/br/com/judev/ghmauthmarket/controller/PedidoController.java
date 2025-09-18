@@ -1,5 +1,6 @@
 package br.com.judev.ghmauthmarket.controller;
 
+import br.com.judev.ghmauthmarket.dto.Pedido.GetPedidoResponse;
 import br.com.judev.ghmauthmarket.dto.Pedido.PedidoRequest;
 import br.com.judev.ghmauthmarket.dto.Pedido.PedidoResponse;
 import br.com.judev.ghmauthmarket.service.PedidoService;
@@ -19,7 +20,7 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    @PostMapping("/usuario/{usuarioId}/pedidos")
+    @PostMapping("/usuarios/{usuarioId}/pedidos")
     public ResponseEntity<PedidoResponse> criarPedido(
             @PathVariable Long usuarioId,
             @Valid @RequestBody PedidoRequest request) {
@@ -27,8 +28,9 @@ public class PedidoController {
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<PedidoResponse>> listarTodos() {
+    public ResponseEntity<List<GetPedidoResponse>> listarTodos() {
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
 
