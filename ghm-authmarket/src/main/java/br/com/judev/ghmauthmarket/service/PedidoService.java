@@ -41,18 +41,18 @@ public class PedidoService {
         // Mount the list of ItemPedido from the request
         List<ItemPedido> itens = request.itens().stream()
                 .map(itemReq -> {
-                    Produto produto = produtoRepository.findById(itemReq.getProduto().getId())
+                    Produto produto = produtoRepository.findById(itemReq.produtoId())
                             .orElseThrow(() -> new EntityNotFoundException(
-                                    "Produto não encontrado: " + itemReq.getProduto().getId()));
+                                    "Produto não encontrado: " + itemReq.produtoId()));
 
-                    if (produto.getQuantidade() < itemReq.getQuantidade()) {
+                    if (produto.getQuantidade() < itemReq.quantidade()) {
                         throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNome());
                     }
 
-                    produto.setQuantidade(produto.getQuantidade() - itemReq.getQuantidade());
+                    produto.setQuantidade(produto.getQuantidade() - itemReq.quantidade());
                     produtoRepository.save(produto);
 
-                    return new ItemPedido(produto, itemReq.getQuantidade());
+                    return new ItemPedido(produto, itemReq.quantidade());
                 })
                 .toList();
 
@@ -82,17 +82,6 @@ public class PedidoService {
     }
     public List<PedidoResponse> listarTodos() {
         return pedidoRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
-    }
-
-    public List<PedidoResponse> listarPorUsuario(Long usuarioId) {
-        if (!usuarioRepository.existsById(usuarioId)) {
-            throw new EntityNotFoundException("Usuário não encontrado com ID: " + usuarioId);
-        }
-
-        return pedidoRepository.findByUsuarioId(usuarioId)
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());

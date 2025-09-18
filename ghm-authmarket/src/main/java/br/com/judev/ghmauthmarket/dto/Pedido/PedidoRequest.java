@@ -8,5 +8,5 @@ import java.util.List;
 
 public record PedidoRequest(
         @NotNull Long usuarioId,
-        @NotEmpty List<ItemPedido> itens
+        @NotEmpty List<ItemRequest> itens
 ) {}

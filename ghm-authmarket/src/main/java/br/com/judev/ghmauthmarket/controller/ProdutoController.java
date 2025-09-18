@@ -26,14 +26,24 @@ public class ProdutoController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest){
+    public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest) {
         CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
- 
+
     }
+
+    @DeleteMapping("{id}")
+    public void deleteProduto(Long idProduto) {
+        produtoService.deleteProduto(idProduto);
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<UpdateProdutoResponse> update(@PathVariable Long id, @RequestBody UpdateProdutoRequest produtoRequest) {
+    public ResponseEntity<UpdateProdutoResponse> update(
+            @PathVariable Long id,
+            @RequestBody UpdateProdutoRequest produtoRequest) {
+
         UpdateProdutoResponse updateProdutoResponse = produtoService.atualizarProduto(id, produtoRequest);
+
         return ResponseEntity.ok(updateProdutoResponse);
     }
 
@@ -47,5 +57,6 @@ public class ProdutoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deleteProduto(id);
         return ResponseEntity.noContent().build();
+
     }
 }
