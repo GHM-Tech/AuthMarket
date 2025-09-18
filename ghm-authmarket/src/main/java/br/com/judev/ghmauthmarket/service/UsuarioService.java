@@ -53,8 +53,8 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
 
-        if(usuario.getSenha().equals(request.senhaAtual())){
-            throw new EntityNotFoundException("Senha incorreta!");
+        if(usuario == null || !usuario.getSenha().equals(request.senhaAtual())){
+            throw new EntityNotFoundException("Usuário inexistente ou Senha incorreta!");
         }
         usuario.setSenha(request.novaSenha());
         usuarioRepository.save(usuario);
