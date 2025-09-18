@@ -1,5 +1,6 @@
 package br.com.judev.ghmauthmarket.service;
 
+import br.com.judev.ghmauthmarket.dto.Pedido.GetPedidoResponse;
 import br.com.judev.ghmauthmarket.dto.Pedido.ItemResponse;
 import br.com.judev.ghmauthmarket.dto.Pedido.PedidoRequest;
 import br.com.judev.ghmauthmarket.dto.Pedido.PedidoResponse;
@@ -67,23 +68,39 @@ public class PedidoService {
         pedido.setValorTotal(total);
 
         Pedido salvo = pedidoRepository.save(pedido);
-        return toResponse(salvo);
+        return new PedidoResponse("Pedido cadastrado com sucesso!");
     }
 
-    private PedidoResponse toResponse(Pedido pedido) {
+    private GetPedidoResponse toResponse(Pedido pedido) {
         List<ItemResponse> itens = pedido.getItens().stream()
                 .map(item -> new ItemResponse(
                         item.getProduto().getId(),
                         item.getProduto().getNome(),
-                        item.getQuantidade()))
+                        item.getQuantidade()
+                ))
                 .toList();
 
-        return toResponse(pedido);
+        return new GetPedidoResponse(
+                pedido.getId(),
+                pedido.getUsuario().getId(),
+                itens
+        );
     }
-    public List<PedidoResponse> listarTodos() {
+
+    public List<GetPedidoResponse> listarTodos() {
         return pedidoRepository.findAll()
                 .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+                .map(pedido -> new GetPedidoResponse(
+                        pedido.getId(),
+                        pedido.getUsuario().getId(),
+                        pedido.getItens().stream()
+                                .map(item -> new ItemResponse(
+                                        item.getProduto().getId(),
+                                        item.getProduto().getNome(),
+                                        item.getQuantidade()
+                                ))
+                                .toList()
+                ))
+                .toList();
     }
 }

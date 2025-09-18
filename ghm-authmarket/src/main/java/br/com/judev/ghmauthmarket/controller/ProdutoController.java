@@ -29,12 +29,6 @@ public class ProdutoController {
     public ResponseEntity<CreateProdutoResponse> register(@Valid @RequestBody CreateProdutoRequest produtoRequest) {
         CreateProdutoResponse produtoResponse = produtoService.criarProduto(produtoRequest);
         return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
-
-    }
-
-    @DeleteMapping("{id}")
-    public void deleteProduto(Long idProduto) {
-        produtoService.deleteProduto(idProduto);
     }
 
     @PutMapping("/{id}")
