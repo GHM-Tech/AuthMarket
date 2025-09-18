@@ -22,11 +22,11 @@ public class ItemPedido {
 
     @NotNull(message = "A quantidade é obrigatória.")
     @Min(value = 0, message = "A quantidade deve ser pelo menos 1.")
-    private Integer quantidade;
+    private int quantidade;
 
     public ItemPedido() {}
 
-    public ItemPedido(Produto produto, Integer quantidade) {
+    public ItemPedido(Produto produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
     }
@@ -43,7 +43,7 @@ public class ItemPedido {
         return produto;
     }
 
-    public Integer getQuantidade() {
+    public int getQuantidade() {
         return quantidade;
     }
 }

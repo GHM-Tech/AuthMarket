@@ -74,7 +74,4 @@ public class ProdutoService {
         return new UpdateProdutoResponse("Produto Atualizado com sucesso!");
     }
 
-    public void deleteProduto(Long idProduto){
-            produtoRepository.deleteById(idProduto);
-        }
  }
