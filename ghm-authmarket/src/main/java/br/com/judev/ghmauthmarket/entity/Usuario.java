@@ -4,26 +4,31 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Table(name = "tb_usuario")
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
-    @NotBlank(message = "o nome completo é obrigatório")
-    @Column(name = "nome", nullable = false,length = 120)
+
+    @NotBlank(message = "O nome completo é obrigatório")
+    @Column(name = "nome", nullable = false, length = 120)
     private String nomeCompleto;
-    @NotBlank(message = "Senha é obrigatória ")
-    @Column(nullable = false)
+
+    @NotBlank(message = "Senha é obrigatória")
     @Size(min = 6, max = 20)
+    @Column(nullable = false)
     private String senha;
+
     @NotBlank
     @Email
     @Column(unique = true)
@@ -31,8 +36,6 @@ public class Usuario {
 
     @Column(name = "data_cadastro", nullable = false)
     private LocalDateTime dataCadastro = LocalDateTime.now();
-   // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    //private List<Produto> produtos;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Produto> produtos = new ArrayList<>();
@@ -41,7 +44,6 @@ public class Usuario {
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Usuario() {
-
     }
 
     public String getNomeCompleto() {
@@ -82,5 +84,41 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
