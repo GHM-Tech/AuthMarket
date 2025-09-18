@@ -1,58 +1,64 @@
-/*package br.com.judev.ghmauthmarket.infra.config;
+package br.com.judev.ghmauthmarket.infra.config;
 
+import br.com.judev.ghmauthmarket.infra.security.SecurityFilter;
+import br.com.judev.ghmauthmarket.infra.security.TokenService;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
     private final UsuarioRepository usuarioRepository;
+    private final TokenService tokenService;
 
-    public SecurityConfig(UsuarioRepository usuarioRepository) {
+    public SecurityConfig(UsuarioRepository usuarioRepository, TokenService tokenService) {
         this.usuarioRepository = usuarioRepository;
+        this.tokenService = tokenService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/index.html").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                        .requestMatchers("/api/auth/change-password").authenticated()
-
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/usuarios/register").permitAll()
+                        .requestMatchers("/api/usuarios/login").permitAll()
+                        .requestMatchers("/api/produtos/**").authenticated()
+                        .requestMatchers("/api/pedidos/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+                .addFilterBefore(SecurityFilterChain(), UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter(jwtService, userDetailsService());
+    public SecurityFilter securityFilter() {
+        return new SecurityFilter(tokenService, userDetailsService());
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
         return authConfig.getAuthenticationManager();
     }
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> (UserDetails) userRepository.findByEmail(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        return username -> (UserDetails) usuarioRepository.findByEmail(username)
+                .orElseThrow(()-> new UsernameNotFoundException("Usuario Não encontrado"));
     }
 }
-*/
