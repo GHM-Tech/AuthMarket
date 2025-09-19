@@ -6,7 +6,10 @@ import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import br.com.judev.ghmauthmarket.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -31,14 +34,20 @@ public class UsuarioController {
     }
 
     @PutMapping("/atualiza-senha")
-    public ResponseEntity<AtualizaSenhaResponse> atualizarSenha(@Valid @RequestBody AtualizaSenhaRequest request) {
-        AtualizaSenhaResponse response = usuarioService.atualizarSenha(request.email(), request);
+    public ResponseEntity<AtualizaSenhaResponse> atualizarSenha(
+            @AuthenticationPrincipal Usuario usuario,
+            @Valid @RequestBody AtualizaSenhaRequest request) throws AccessDeniedException {
+
+        AtualizaSenhaResponse response = usuarioService.atualizarSenha(usuario, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{idUsuario}")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long idUsuario) {
-        usuarioService.deletarUsuario(idUsuario);
+    public ResponseEntity<Void> deletarUsuario(
+            @AuthenticationPrincipal Usuario usuario,
+            @PathVariable Long idUsuario) throws AccessDeniedException {
+
+        usuarioService.deletarUsuario(usuario, idUsuario);
         return ResponseEntity.noContent().build();
     }
 }

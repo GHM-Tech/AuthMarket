@@ -5,6 +5,7 @@ import br.com.judev.ghmauthmarket.infra.security.TokenService;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,10 +33,20 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuarios/register").permitAll()
-                        .requestMatchers("/api/usuarios/login").permitAll()
-                        .requestMatchers("/api/produtos/**").authenticated()
-                        .requestMatchers("/api/pedidos/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/login").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/usuarios/atualiza-senha").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/api/produtos/register").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/produtos/{id}").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/produtos/").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/api/pedidos/register").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/api/pedidos/{id}").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/pedidos/{idPedido}/produtos/{idProduto}").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/pedidos/{id}").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter(), UsernamePasswordAuthenticationFilter.class)
