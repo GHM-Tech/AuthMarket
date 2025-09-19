@@ -25,6 +25,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/api/usuarios/register") || path.startsWith("/api/usuarios/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = this.recoverToken(request);
         System.out.println("Token recuperado: " + (token != null ? "SIM" : "NÃO"));
 

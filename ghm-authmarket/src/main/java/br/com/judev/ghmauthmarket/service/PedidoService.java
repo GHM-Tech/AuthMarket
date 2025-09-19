@@ -39,7 +39,6 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
 
-        // Mount the list of ItemPedido from the request
         List<ItemPedido> itens = request.itens().stream()
                 .map(itemReq -> {
                     Produto produto = produtoRepository.findById(itemReq.produtoId())
@@ -57,17 +56,15 @@ public class PedidoService {
                 })
                 .toList();
 
-        // Associate items with the order
         itens.forEach(pedido::adicionarItem);
 
-        // Calculate total
         BigDecimal total = itens.stream()
                 .map(i -> i.getProduto().getPreco().multiply(BigDecimal.valueOf(i.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         pedido.setValorTotal(total);
 
-        Pedido salvo = pedidoRepository.save(pedido);
+        pedidoRepository.save(pedido);
         return new PedidoResponse("Pedido cadastrado com sucesso!");
     }
 

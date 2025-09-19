@@ -6,10 +6,10 @@ import br.com.judev.ghmauthmarket.infra.security.TokenService;
 import br.com.judev.ghmauthmarket.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @Service
@@ -62,22 +62,30 @@ public class UsuarioService {
 
     }
 
-    public AtualizaSenhaResponse atualizarSenha(String email, AtualizaSenhaRequest request){
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado pelo email"));
+    public AtualizaSenhaResponse atualizarSenha(Usuario usuarioAutenticado, AtualizaSenhaRequest request) throws AccessDeniedException {
+        if (!usuarioAutenticado.getEmail().equals(request.email())) {
+            throw new AccessDeniedException("Você não pode atualizar a senha de outro usuário");
+        }
 
-        if (!passwordEncoder.matches(request.senhaAtual(), usuario.getSenha())) {
+        if (!passwordEncoder.matches(request.senhaAtual(), usuarioAutenticado.getSenha())) {
             throw new BadCredentialsException("Senha atual incorreta!");
         }
-        usuario.setSenha(request.novaSenha());
-        usuarioRepository.save(usuario);
-        return new AtualizaSenhaResponse("Senha atualizada com Sucesso!");
+
+        usuarioAutenticado.setSenha(passwordEncoder.encode(request.novaSenha()));
+        usuarioRepository.save(usuarioAutenticado);
+
+        return new AtualizaSenhaResponse("Senha atualizada com sucesso!");
     }
 
-    public void deletarUsuario(Long idUsuario) {
+    public void deletarUsuario(Usuario usuarioAutenticado, Long idUsuario) throws AccessDeniedException {
         if (!usuarioRepository.existsById(idUsuario)) {
             throw new EntityNotFoundException("Usuário não encontrado com id: " + idUsuario);
         }
+
+        if (!usuarioAutenticado.getId().equals(idUsuario)) {
+            throw new AccessDeniedException("Você não pode deletar outro usuário");
+        }
+
         usuarioRepository.deleteById(idUsuario);
     }
 }
