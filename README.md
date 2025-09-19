@@ -1,7 +1,8 @@
 GHMAuthMarket API
 Descrição
 
-O GHMAuthMarket é uma API RESTful desenvolvida com Spring Boot, que utiliza JWT (JSON Web Token) para autenticação e autorização. O sistema permite que usuários se cadastrem, façam login e realizem operações de cadastro de produtos e pedidos, garantindo que apenas usuários autenticados possam acessar determinadas rotas.
+O GHMAuthMarket é uma API REST
+desenvolvida com Spring Boot, que utiliza JWT (JSON Web Token) para autenticação e autorização. O sistema permite que usuários se cadastrem, façam login e realizem operações de cadastro de produtos e pedidos, garantindo que apenas usuários autenticados possam acessar determinadas rotas.
 
 O projeto integra PostgreSQL como banco de dados e segue a arquitetura em camadas (Controller → Service → Repository → Database) para facilitar manutenção e organização do código.
 
@@ -224,3 +225,4 @@ JWT garante que apenas usuários autenticados realizem operações sensíveis.
 A API está pronta para ser testada via Postman ou Insomnia.
 
 Se você quiser, posso criar uma versão ainda mais “top” com badges, links para Postman e instruções de testes de JWT, estilo README profissional de mercado.
+
